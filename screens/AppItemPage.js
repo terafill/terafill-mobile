@@ -16,7 +16,7 @@ import { Padding, Border, FontSize, FontFamily, Color } from "../GlobalStyles";
 // const Stack = createStackNavigator();
 
 const AppItemPage = ({route, navigation}) => {
-  const { itemId } = route.params;
+  const { itemId, itemDataList } = route.params;
 
   return (
     <View style={styles.apphometem}>
@@ -24,22 +24,26 @@ const AppItemPage = ({route, navigation}) => {
           <Image
             style={styles.iconxxlarge}
             resizeMode="cover"
-            source={require("../assets/iconxxlarge1.png")}
+            source={{
+              uri: `https://cool-rose-moth.faviconkit.com/${itemDataList[itemId].website}/256`
+            }}
           />
           <TextInput
             style={[styles.inputbox, styles.inputboxSpaceBlock]}
-            placeholder="john.doe@keylance.com"
+            // placeholder="john.doe@keylance.com"
             keyboardType="default"
             placeholderTextColor="#333"
+            value={itemDataList[itemId].title}
           />
         </View>
         <View style={[styles.inputbox1, styles.inputboxSpaceBlock1]}>
           <Text style={styles.label}>Username</Text>
           <TextInput
             style={[styles.inputboxChild, styles.iconbaseFlexBox]}
-            placeholder="john.doe@keylance.com"
+            // placeholder="john.doe@keylance.com"
             keyboardType="default"
             placeholderTextColor="#333"
+            value={itemDataList[itemId].username}
           />
         </View>
         <View style={[styles.inputbox1, styles.inputboxSpaceBlock1]}>
@@ -49,24 +53,28 @@ const AppItemPage = ({route, navigation}) => {
             placeholder="Edit"
             keyboardType="default"
             placeholderTextColor="#3f9bf1"
+            secureTextEntry={true}
+            value={itemDataList[itemId].password}
           />
         </View>
         <View style={[styles.inputbox1, styles.inputboxSpaceBlock1]}>
           <Text style={styles.label}>Website</Text>
           <TextInput
             style={[styles.inputboxChild, styles.iconbaseFlexBox]}
-            placeholder="keylance.io"
+            // placeholder="keylance.io"
             keyboardType="default"
             placeholderTextColor="#333"
+            value={itemDataList[itemId].website}
           />
         </View>
         <View style={[styles.inputbox1, styles.inputboxSpaceBlock1]}>
           <Text style={styles.label}>Notes</Text>
           <TextInput
             style={[styles.inputboxChild, styles.iconbaseFlexBox]}
-            placeholder={`Some Additional Notes: ${itemId}`}
+            // placeholder={`Some Additional Notes: ${itemId}`}
             keyboardType="default"
             placeholderTextColor="#333"
+            value={itemDataList[itemId].description?itemDataList[itemId].description:''}
           />
         </View>
         <View style={styles.buttonderivativebaseParent}>

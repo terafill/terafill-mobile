@@ -1,17 +1,28 @@
-import { memo, useState } from "react";
+import { memo, useEffect, useState, useRef } from "react";
 import { View, Text, Pressable, Image, StyleSheet, FlatList } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
 import { Button } from "react-native-paper";
+import { useTokenExpiration } from '../utils/TokenTools';
+import { getDefaultVaultItems, updateVaultItem, createVaultItem, deleteVaultItem } from '../utils/data';
 
-
-const AppItem = memo(({ id, website, title, username }) => {
+const AppItem = memo(({ id, website, title, username, itemDataList }) => {
   const navigation = useNavigation();
 
   return (
     <Pressable
       style={styles.appItem}
-      onPress={() => navigation.navigate("AppHome", {screen: "AppItemPage", params: {itemId: id}})}
+      onPress={
+        () => {
+          navigation.navigate(
+            "AppHome",
+            {
+              screen: "AppItemPage",
+              params: {itemId: id, itemDataList: itemDataList}
+            }
+          )
+        }
+      }
     >
       <Image
         style={styles.appItemIcon}
@@ -106,6 +117,41 @@ const AppItemList = () => {
     }
   );
 
+  const [itemDataList, setItemDataList] = useState([]);
+  const shouldLoad = useRef(true);
+
+  useTokenExpiration();
+
+  useEffect(() => {
+    if(shouldLoad.current){
+      (async () => {
+        console.log("Data loading!")
+        const data = await getDefaultVaultItems();
+        const morphedData = {};
+        for (let idx=0;idx<data.length;idx+=1){
+          morphedData[data[idx].id] = data[idx];
+          morphedData[data[idx].id].icon =  `https://cool-rose-moth.faviconkit.com/${data[idx].website}/256`;
+        }
+        setItemDataList(morphedData);
+      })();
+      shouldLoad.current = false;
+    }
+  }, []);
+
+  useEffect(()=>{
+    console.log("itemDataList", itemDataList);
+  }, [itemDataList])
+
+  const updateItem = (itemId, attribute, value) => {
+    setItemDataList(prevItemDataList=>({
+      ...prevItemDataList,
+      [itemId]: {
+        ...prevItemDataList[itemId],
+        [attribute]: value
+      }
+    }));
+  }
+
     return (
         <View style={{
           height: '100%',
@@ -124,14 +170,16 @@ const AppItemList = () => {
                 zIndex: 0,
                 flex: 1
               }}
-              data={Object.entries(appListFlatListData).map(([id, value]) => value)}
+              data={Object.entries(itemDataList).map(([id, value]) => value)}
               renderItem={({ item }) =>{
                  return <AppItem
                   key={item.id}
                   id={item.id}
                   website={item.website}
                   title={item.title}
-                  username={item.username}/>
+                  username={item.username}
+                  itemDataList={itemDataList}
+                  />
                   }
                 }
             />

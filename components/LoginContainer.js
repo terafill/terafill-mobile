@@ -5,7 +5,14 @@ import { TextInput, Button} from 'react-native-paper';
 
 import { Padding, FontFamily, FontSize, Color, Border } from "../GlobalStyles";
 
-const LoginContainer = memo(({ navigation, top, height, onLogin }) => {
+const LoginContainer = memo(({
+  navigation,
+  top,
+  height,
+  onLogin,
+  userData,
+  setUserData
+}) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
@@ -15,7 +22,7 @@ const LoginContainer = memo(({ navigation, top, height, onLogin }) => {
     // transform: [{ translateY: top }],
     top: top,
   };
-  console.log("addedStyle", addedStyle);
+  // console.log("addedStyle", addedStyle);
 
   return (
     <Animated.View style={[addedStyle, styles.loginFrame]}>
@@ -23,18 +30,18 @@ const LoginContainer = memo(({ navigation, top, height, onLogin }) => {
           <TextInput
             label="Username"
             placeholder="Enter username ..."
-            value={username}
+            value={userData.email}
             mode={"outlined"}
-            onChangeText={username => setUsername(username)}
+            onChangeText={email => {setUserData(prevUserData=>({...prevUserData, email: email}))}}
             outlineColor="lightblue"
             activeOutlineColor="black"
           />
           <TextInput
             label="Password"
             placeholder="Enter master password ..."
-            value={password}
+            value={userData.password}
             mode={"outlined"}
-            onChangeText={password => setPassword(password)}
+            onChangeText={password => {setUserData(prevUserData=>({...prevUserData, password: password}))}}
             outlineColor="lightblue"
             activeOutlineColor="black"
             secureTextEntry={true}

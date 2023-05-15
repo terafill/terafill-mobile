@@ -19,6 +19,7 @@ const SettingsList = () => {
     <NativeListItem label="Personal Info" destination="Personal Info"/>,
     <NativeListItem label="Security" destination="Security"/>,
     <NativeListItem label="Data Generator" destination="Data Generator"/>,
+    <NativeListItem label="Logout" destination="AppSetup"/>,
   ]);
   const navigation = useNavigation();
 

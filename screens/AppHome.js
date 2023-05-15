@@ -12,7 +12,7 @@ const Stack = createStackNavigator();
 const AppHome = ({ navigation }) => {
 
   return (
-    <Stack.Navigator initialRouteName="AppItemList">
+    <Stack.Navigator initialRouteName="AppItemList" screenOptions={{animationEnabled: true}}>
       <Stack.Screen name="AppItemList" component={AppItemList} options={{headerShown: false}}/>
       <Stack.Screen name="AppItemPage" component={AppItemPage} />
       {/*<Stack.Screen name="AppItemAdd" component={AppItemAdd} />*/}
